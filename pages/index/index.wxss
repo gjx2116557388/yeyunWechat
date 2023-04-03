@@ -1,0 +1,69 @@
+.top-header{
+  position: relative;
+  /* display: flex;
+  justify-content: center; */
+  color: #FFF;
+  /* background: #FD637E; */
+  background-image: url("https://www.lovelilin.com/images/banner.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 400rpx;
+  padding-left: 30rpx;
+  padding-top: 15rpx;
+}
+.hi{
+  font-weight: bold;
+  font-size: 20px;
+}
+.mar-top-40{
+  margin-top: 40rpx;
+}
+.connect-btn{
+  height: 50rpx;
+  width: 400rpx;
+  text-align: center;
+  line-height: 50rpx;
+  border: 1rpx solid #C2CCAE;
+  background: #E87188;
+  display: inline-block;
+  border-radius:30rpx;
+  position: absolute;
+  bottom: 100rpx;
+}
+.menu{
+  /* 防止定位跟弹性布局冲突所以显式加一个宽度 */
+  width: 100%;
+  position: relative;
+  top: -55rpx;
+  border-top-left-radius:60rpx;
+  /* border-top-right-radius:11%; */
+  height: 400rpx;
+  background: #FFF;
+  /* background: #000; */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.menu-btn{
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  /* border: 1rpx solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25rpx 25rpx 0 25rpx;
+  color: #FFF;
+}
+.menu-btn1{
+  background: #83bceb;
+}
+.menu-btn2{
+  background: #f7b56a;
+}
+.menu-btn3{
+  background: #f5b3ab;
+}
+.menu-btn4{
+  background: #fa9c50;
+}

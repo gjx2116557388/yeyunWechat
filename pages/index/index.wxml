@@ -1,0 +1,52 @@
+<!--index.wxml-->
+<!-- data-weui-theme="dark" 切换刀dark模式 -->
+<view >
+  <view class="top-header">
+    <!-- <view class="hi mar-top-30">
+      Hi，夜韵儿
+    </view >
+    <view class="hi mar-top-30">
+      连接设备，马上玩
+    </view> -->
+    
+    <view class="connect-btn mar-top-40" bindtap="connectBtn">
+      夜韵儿玩具（未连接）
+    </view>
+  </view>
+  <view class="menu">
+    <!-- 我这里是菜单 -->
+    <view class="menu-btn menu-btn1">
+      <view>
+          <image src="/assets/switch.png" style="width: 100rpx;height: 100rpx;"></image>
+          <view style="text-align: center;">
+            <text>开关 \n switch</text>
+          </view>
+      </view>
+    </view>
+    <view class="menu-btn menu-btn2">
+      <view>
+          <image src="/assets/hz.png" style="width: 100rpx;height: 100rpx;"></image>
+          <view style="text-align: center;">
+            <text>频率 \n hz</text>
+          </view>
+      </view>
+    </view>
+    <view class="menu-btn menu-btn3">
+      <view>
+          <image src="/assets/heating.png" style="width: 100rpx;height: 100rpx;"></image>
+          <view style="text-align: center;">
+            <text>加热 \n heating</text>
+          </view>
+      </view>
+    </view>
+    <view class="menu-btn menu-btn4">
+      <view>
+          <image src="/assets/my.png" style="width: 100rpx;height: 100rpx;"></image>
+          <view style="text-align: center;">
+            <text>我的 \n my</text>
+          </view>
+      </view>
+    </view>
+
+  </view>
+</view>
