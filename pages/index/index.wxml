@@ -10,7 +10,7 @@
     </view> -->
     
     <view class="connect-btn mar-top-40" bindtap="connectBtn">
-      夜韵儿玩具（未连接）
+      夜韵儿玩具（{{connectData}}）
     </view>
   </view>
   <view class="menu">
@@ -46,6 +46,11 @@
             <text>我的 \n my</text>
           </view>
       </view>
+    </view>
+    <view>
+    <!-- 测试 -->
+    <view>这里是搜索到所有蓝牙设备</view>
+    {{blueAllData}}
     </view>
 
   </view>

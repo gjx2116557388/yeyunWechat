@@ -36,6 +36,8 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     canIUseGetUserProfile: false,
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName'), // 如需尝试获取用户信息可改为false
+    connectData:'未连接',
+    blueAllData:[],
     //蓝牙信息
     inputValue: 'Redmi Buds 3',
     deviceId:'',
@@ -57,6 +59,7 @@ Page({
   },
   
   connectBtn(){
+    var that = this
     console.log("测试开始233");
     // 蓝牙初始化
     wx.openBluetoothAdapter({
@@ -65,10 +68,10 @@ Page({
         wx.showToast({
           title: '蓝牙初始化成功',
           icon: "success",
-          duration: 800
+          duration: 1000
         })
         // 开始搜索蓝牙
-        this.findBlue()
+        that.findBlue()
 
       },
       fail:(res) =>{
@@ -85,7 +88,7 @@ Page({
   },
   // 搜索蓝牙方法
    findBlue(){
-     var that = this
+    var that = this
      // 开始搜索蓝牙
      wx.startBluetoothDevicesDiscovery({
        allowDuplicatesKey: false,
@@ -95,8 +98,14 @@ Page({
          wx.showLoading({
            title: '正在搜索设备',
          })
+        that.setData({
+          connectData: "搜索中"
+        })
+        // that.data.connectData = "搜索中"
         // 获取搜索到的蓝牙设备
-        this.getBlue()
+        setTimeout(()=>{
+          that.getBlue()
+        },1000)
        }
      })
    },
@@ -105,21 +114,29 @@ Page({
     var that = this
     wx.getBluetoothDevices({
       success: (res) => {
-        wx.hideLoading()
-        for(var i = 0; i < res.devices.length; i++){
-          console.log(res.devices[i]);
-          // 这里就可以判断一下想要连接的蓝牙设备名字
-          if (res.devices[i].name == that.data.inputValue || res.devices[i].localName == that.data.inputValue) {
+        res.devices.forEach((ele,index)=>{
+          let array0 = that.data.blueAllData
+          array0.push(`${index}.${ele.name}`)
+         that.setData({
+          blueAllData: array0
+         })
+          if (ele.name == that.data.inputValue || ele.localName == that.data.inputValue) {
+            wx.hideLoading()
             console.log(`连接成功了哦代码酱！！！`);
-            // 保存deviceId
             that.setData({
-              deviceId: res.devices[i].deviceId
+              deviceId: ele.deviceId
             })
-            that.data.deviceId = res.devices[i].deviceId //一样的用法做个小兼容
-            that.connectBlue(res.devices[i].deviceId)
-            return 
+            // 连接之前要先停止搜素 
+            wx.stopBluetoothDevicesDiscovery({
+              success: (res) => {
+                console.log('连接蓝牙成功后关闭搜索');
+                that.connectBlue(ele.deviceId)
+                console.log(ele.deviceId);
+              },
+            })
+            return
           }
-        }  
+        })
       },
       fail: () =>{
         console.log('搜索蓝牙失败！！！');
@@ -133,16 +150,15 @@ Page({
       // 这里的deviceId 需要已经通过 createBLEConnection 与对应设备建立连接
       deviceId: deviceId, // 设备id
       success: (res)=>{
+        that.setData({
+          connectData: "连接成功"
+        })
         wx.showToast({
           title: '连接成功',
           icon: 'fails',
           duration: 1000
         })
-      wx.stopBluetoothDevicesDiscovery({
-        success: (res) => {
-          console.log('连接蓝牙成功后关闭搜索');
-        },
-      })
+      console.log('代码酱',that.data.blueAllData);
       // 后续还要获取蓝牙设备的所有服务开发中
       }
     })
