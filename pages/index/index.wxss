@@ -54,6 +54,7 @@
   align-items: center;
   margin: 25rpx 25rpx 0 25rpx;
   color: #FFF;
+  opacity: .7;
 }
 .menu-btn1{
   background: #83bceb;
@@ -65,5 +66,6 @@
   background: #f5b3ab;
 }
 .menu-btn4{
-  background: #fa9c50;
+  /* background: #fa9c50; */
+  background-color: #FFEB93;
 }

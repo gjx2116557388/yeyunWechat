@@ -262,25 +262,28 @@ Page({
   //写入数据
   writeFn(uuid){
     var that = this;
-    console.log(`写入数据ID${that.data.writeId}`);
 
-    const buffer = new ArrayBuffer(2) // 构造发送数据的ArrayBuffer
-    const dataView = new DataView(buffer)
-    dataView.setUint8(0, 0xFF);
-    dataView.setUint8(1, 0x0); // 设置发送的数据，这里假设是一个字节的数据0x01
+    const buffer = new ArrayBuffer(2);
+    const dataView = new DataView(buffer);
+    // dataView.setUint8(0, 0x0f); // 设置第一个字节为 00001111
+    // dataView.setUint8(1, 0xf0); // 设置第二个字节为 11110000
+    dataView.setUint16(0, 0xaa55,false);
+
     console.log(`这里是发送出去的数据${buffer},${that.data.writeId}`);
+   setInterval(() => {
     wx.writeBLECharacteristicValue({
       deviceId: that.data.deviceId,
       serviceId: that.data.services,
       characteristicId: that.data.writeId,
-      value: buffer.buffer,
+      value: buffer,
       success(res) {
-        console.log('发送数据成功')
+        console.log(`发送数据成功,${JSON.stringify(res)}`)
       },
       fail(res) {
         console.log('发送数据失败：', res)
       }
     })
+   }, 1000);
   },
 
 
