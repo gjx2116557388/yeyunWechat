@@ -37,8 +37,8 @@
   top: -55rpx;
   border-top-left-radius:60rpx;
   /* border-top-right-radius:11%; */
-  height: 400rpx;
-  background: #FFF;
+  height: 100%;
+  background: #fff;
   /* background: #000; */
   display: flex;
   justify-content: center;
@@ -49,6 +49,7 @@
   height: 300rpx;
   border-radius: 50%;
   /* border: 1rpx solid black; */
+  /* box-shadow: 0 2rpx 4rpx #00000014; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,5 +68,53 @@
 }
 .menu-btn4{
   /* background: #fa9c50; */
-  background-color: #FFEB93;
+  background-color: #FFD383;
+}
+.open{
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #FFF;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  height: 100vh; /* 可根据需要设置容器高度 */
+}
+
+.close{
+  display: none;
+}
+.shak_icon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #DEDFDE;
+}
+
+.shak_img{
+  height: 200rpx;
+  width: 200rpx;
+  transform-origin: bottom center;
+  animation: rotate 0.1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
 }
