@@ -38,6 +38,7 @@ Page({
     canIUseGetUserProfile: false,
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName'), // 如需尝试获取用户信息可改为false
     connectData:'未连接',
+    shakState: false, //震动的状态
     //测试数据
     blueAllData:[],
     blueAlluuid:[],
@@ -53,6 +54,10 @@ Page({
     uuid:'',
     propertiesuuId:'', //监听值
     writeId: "", //写入值
+    //连续发码测试
+    timer: null,
+    // shakData:null,
+    
   },
   // 事件处理函数
   bindViewTap() {
@@ -83,32 +88,63 @@ Page({
         })
         // 开始搜索蓝牙
         that.findBlue()
-
       },
       fail:(res) =>{
         console.log(`蓝牙初始化失败！！！${res}`);
         // 顶部提示下
         this.setData({
           error: '这是一个错误提示'
-      })
-        // wx.showToast({
-        //   title: '请开启蓝牙',
-        //   icon: "fail",
-        //   duration: 1000
-        // })
-
+        })
       }
     })
 
   },
-  //按钮的点击事件
-  btn(){
-    wx.showToast({
-      title: "请给开发者反馈UUID的排列顺序",
-      icon: 'success',
-      duration: 1500
-    })
+
+  // 连续发码版本
+  // //震动按钮
+  // shakClose(){
+  //   let shakData = this.data.shakState;
+  //   this.setData({
+  //     shakState: !shakData
+  //   });
+  //   clearInterval(this.data.timer); // 清除定时器
+  //   console.log("关闭");
+  // },
+
+  // //按钮的点击事件
+  // shakBtn(e) {
+  //   let shakData = this.data.shakState;
+  //   let value = e.currentTarget.dataset.value;
+  //   this.setData({
+  //     shakState: !shakData,
+  //   });
+  //   // this.setData({
+  //   //   shakData: value,
+  //   // })
+  //  setTimeout(function(){
+  //     let time = setInterval(() => {
+  //       this.writeFn(e)
+  //       // console.log(this.data.shakData);
+  //       console.log('打开');
+  //     },1000)
+  //     this.setData({
+  //       timer: time,
+  //     })
+  //  }.bind(this),1000)
+      
+      
+  // },
+  // 点击发码版本
+  shakBtn(e){
+    let shakData = this.data.shakState;
+    let value = e
+    this.setData({
+      shakState: !shakData,
+    });
+    this.writeFn(value)
   },
+
+
   // 搜索蓝牙方法
    findBlue(){
     var that = this
@@ -246,10 +282,39 @@ Page({
           }
           if (item.properties.write){
             // 发送数据
-            that.writeFn(item.properties.write)
+            // that.writeFn(item.properties.write)
             that.setData({
               writeId: item.uuid//用来写入的值
             })
+            // that.writeFn(0x18e7)
+            // 连续发码
+            // setTimeout(function(){
+              clearInterval(this.data.timer)
+              const buffer = new ArrayBuffer(2);
+              const dataView = new DataView(buffer);
+              dataView.setUint16(0,0x18e7,false);
+              let time = setInterval(()=>{
+                wx.writeBLECharacteristicValue({
+                  deviceId: that.data.deviceId,
+                  serviceId: that.data.services,
+                  characteristicId: that.data.writeId,
+                  value: buffer,
+                  success(res) {
+                    console.log(`发送数据成功,${JSON.stringify(res)}`,'连续发码')
+                  },
+                  fail(res) {
+                    console.log('发送数据失败：', res)
+                  }
+                })
+              },500)
+              this.setData({
+                timer: time
+              })
+            // }.bind(this),1000)
+
+
+
+
           }
         }
         
@@ -260,30 +325,39 @@ Page({
     })
   },
   //写入数据
-  writeFn(uuid){
-    var that = this;
+  // btn1(e){
+  //   var value = e.currentTarget.dataset.value;
+  //   console.log(value);
+  // },
 
+  writeFn(e){
+    var that = this;
+    // var order = e.currentTarget.dataset.value;
+    var order = e.currentTarget.dataset.value;
     const buffer = new ArrayBuffer(2);
     const dataView = new DataView(buffer);
     // dataView.setUint8(0, 0x0f); // 设置第一个字节为 00001111
     // dataView.setUint8(1, 0xf0); // 设置第二个字节为 11110000
-    dataView.setUint16(0, 0xaa55,false);
+    dataView.setUint16(0, order,false);
+    console.log(order);
 
     console.log(`这里是发送出去的数据${buffer},${that.data.writeId}`);
-   setInterval(() => {
-    wx.writeBLECharacteristicValue({
-      deviceId: that.data.deviceId,
-      serviceId: that.data.services,
-      characteristicId: that.data.writeId,
-      value: buffer,
-      success(res) {
-        console.log(`发送数据成功,${JSON.stringify(res)}`)
-      },
-      fail(res) {
-        console.log('发送数据失败：', res)
-      }
-    })
-   }, 1000);
+  //  setInterval(() => {
+    for(var i = 0;i<3;i++){
+      wx.writeBLECharacteristicValue({
+        deviceId: that.data.deviceId,
+        serviceId: that.data.services,
+        characteristicId: that.data.writeId,
+        value: buffer,
+        success(res) {
+          console.log(`发送数据成功,${JSON.stringify(res)}`,1)
+        },
+        fail(res) {
+          console.log('发送数据失败：', res,i)
+        }
+      })
+    }
+  //  }, 1000);
   },
 
 
