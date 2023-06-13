@@ -75,6 +75,31 @@ Page({
   },
   
   connectBtn(){
+    // 连续发码
+    // clearInterval(this.data.timer)  
+    // const buffer = new ArrayBuffer(2);
+    // const dataView = new DataView(buffer);
+    // dataView.setUint16(0,0x18e7,false);
+    // let time = setInterval(()=>{
+    //   wx.writeBLECharacteristicValue({
+    //     deviceId: that.data.deviceId,
+    //     serviceId: that.data.services,
+    //     characteristicId: that.data.writeId,
+    //     value: buffer,
+    //     success(res) {
+    //       console.log(`发送数据成功,${JSON.stringify(res)}`,'连续发码')
+    //     },
+    //     fail(res) {
+    //       console.log('发送数据失败：', res)
+    //     }
+    //   })
+    // },500)
+    // this.setData({
+    //   timer: time
+    // })
+
+
+
     var that = this
     console.log("测试开始233");
     // 蓝牙初始化
@@ -138,6 +163,14 @@ Page({
   shakBtn(e){
     let shakData = this.data.shakState;
     let value = e
+    wx.vibrateShort({
+      success: function() {
+        console.log("短震动成功");
+      },
+      fail: function() {
+        console.log("短震动失败");
+      }
+    });
     this.setData({
       shakState: !shakData,
     });
@@ -160,6 +193,19 @@ Page({
         that.setData({
           connectData: "搜索中"
         })
+        // 搜索10s后关闭搜索
+        setTimeout(()=>{
+            wx.stopBluetoothDevicesDiscovery({
+              success: (res) => {
+                console.log('搜索10秒后关闭搜索');
+              },
+            })
+            wx.hideLoading()
+            that.setData({
+              connectData: "未搜索到设备"
+            })
+        },10000)
+
         // that.data.connectData = "搜索中"
         // 获取搜索到的蓝牙设备
         setTimeout(()=>{
@@ -289,7 +335,7 @@ Page({
             // that.writeFn(0x18e7)
             // 连续发码
             // setTimeout(function(){
-              clearInterval(this.data.timer)
+              clearInterval(that.data.timer)
               const buffer = new ArrayBuffer(2);
               const dataView = new DataView(buffer);
               dataView.setUint16(0,0x18e7,false);
@@ -307,7 +353,7 @@ Page({
                   }
                 })
               },500)
-              this.setData({
+              that.setData({
                 timer: time
               })
             // }.bind(this),1000)
@@ -340,7 +386,15 @@ Page({
     // dataView.setUint8(1, 0xf0); // 设置第二个字节为 11110000
     dataView.setUint16(0, order,false);
     console.log(order);
-
+    // 按钮震动
+    wx.vibrateShort({
+      success: function() {
+        console.log("短震动成功");
+      },
+      fail: function() {
+        console.log("短震动失败");
+      }
+    });
     console.log(`这里是发送出去的数据${buffer},${that.data.writeId}`);
   //  setInterval(() => {
     for(var i = 0;i<3;i++){

@@ -1,6 +1,4 @@
 {
   "usingComponents": {
-    "mp-icon": "weui-miniprogram/icon/icon",
-    "mp-toptips": "weui-miniprogram/toptips/toptips"
   }
 }
