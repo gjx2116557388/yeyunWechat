@@ -1,0 +1,18 @@
+<view class="help_wrap" style="height: {{componentHeight}};">
+  <!--pages/help/help.wxml-->
+  <view class="help_box">
+   <view>
+      <view class="help_title">
+        尊敬的用户
+      </view>
+      <view>1. 请检查设备是否开机，有电的情况下会有灯光闪烁</view>
+      <view>2. 请一定要确保打开您手机的蓝牙功能</view>
+      <view>3. 同意授权程序提示使用您的蓝牙功能</view>
+      <view>4. 点击上面红色按钮（显示的未连接）连接或者重新进入程序会自动连接</view>
+      <view>5. 连接成功后点击程序的开关，设备会有抖动</view>
+      <view class="to_videos"><navigator url="/pages/videos/videos">点击查看使用视频</navigator></view>
+   </view>
+  </view>
+
+
+</view>

@@ -21,6 +21,23 @@ Page({
 
     wx.onAppShow(function() {
       console.log('小程序显示');
+      // 监听蓝牙连接状态变化
+      // wx.onBLEConnectionStateChange(function(res) {
+      //   console.log('设备连接状态变化', res);
+      //   var isConnected = res.connected; // 连接状态，true表示已连接，false表示断开连接
+      //   var deviceId = res.deviceId; // 设备ID
+
+      //   if (isConnected) {
+      //     // 设备已连接
+      //     console.log('设备已连接');
+      //     // 进行相应的操作
+      //   } else {
+      //     // 设备已断开连接
+      //     console.log('设备已断开连接');
+      //     // 进行相应的操作
+      //   }
+      // });
+      
     });
 
     wx.onPageNotFound(function() {
@@ -38,10 +55,9 @@ Page({
     canIUseGetUserProfile: false,
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName'), // 如需尝试获取用户信息可改为false
     connectData:'未连接',
+    connectState:false,
     shakState: false, //震动的状态
     //测试数据
-    blueAllData:[],
-    blueAlluuid:[],
     //蓝牙信息
     // 测试硬件 红米蓝牙耳机 Redmi Buds 3
     // 真实名字 FFBO  RC20 YMW_YE2
@@ -71,46 +87,87 @@ Page({
         canIUseGetUserProfile: true
       })
     }
-    this.connectBtn()
+    // this.authorizationFn()
+    this.connect()
   },
-  
+  // 判断用户是否授权蓝牙权限
+  authorizationFn(){
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.bluetooth']) {
+          // 用户未授权蓝牙权限，需要进行处理
+          // 显示一个提示框或者其他方式告知用户需要蓝牙权限
+          wx.showModal({
+            title: '提示',
+            content: '需要蓝牙权限才能使用该功能，请授权蓝牙权限。',
+            success(res) {
+              if (res.confirm) {
+                // 用户点击确定，跳转到微信小程序的授权设置页面
+                wx.openSetting({
+                  success(res) {
+                    // 用户在设置页面进行了操作后的回调
+                    // 检查蓝牙权限是否被重新授权，根据情况进行相应处理
+                    if (res.authSetting['scope.bluetooth']) {
+                      // 蓝牙权限已被重新授权，进行连接等操作
+                    } else {
+                      // 蓝牙权限仍未被授权，可以继续提示用户或进行其他处理
+                    }
+                  }
+                });
+              } else if (res.cancel) {
+                // 用户点击取消，可以继续提示用户或进行其他处理
+              }
+            }
+          });
+        } else {
+          // 蓝牙权限已被授权，进行连接等操作
+        }
+      }
+    });
+  },
+
+  // 连接按钮
   connectBtn(){
-    // 连续发码
-    // clearInterval(this.data.timer)  
-    // const buffer = new ArrayBuffer(2);
-    // const dataView = new DataView(buffer);
-    // dataView.setUint16(0,0x18e7,false);
-    // let time = setInterval(()=>{
-    //   wx.writeBLECharacteristicValue({
-    //     deviceId: that.data.deviceId,
-    //     serviceId: that.data.services,
-    //     characteristicId: that.data.writeId,
-    //     value: buffer,
-    //     success(res) {
-    //       console.log(`发送数据成功,${JSON.stringify(res)}`,'连续发码')
-    //     },
-    //     fail(res) {
-    //       console.log('发送数据失败：', res)
-    //     }
-    //   })
-    // },500)
-    // this.setData({
-    //   timer: time
-    // })
+    // 点击震动
+    wx.vibrateShort({
+      success: function() {
+        console.log("短震动成功");
+      },
+      fail: function() {
+        console.log("短震动失败");
+      }
+    });
+    if (this.data.connectState) {
+      this.authorizationFn()
+      this.connect()
+     
+    }else{
+      // 断开与蓝牙设备的连接
+      wx.closeBLEConnection({
+        deviceId: this.data.deviceId,
+        success: function(res) {
+          console.log('断开蓝牙连接成功', res);
+          this.setData({
+            connectState: true,
+            connectData: "未连接"
+          })
+        },
+        fail: function(res) {
+          console.log('断开蓝牙连接失败', res);
+        }
+      });
+    }
+     
+    
+  },
 
-
-
+  // 连接方法函数
+  connect(){
     var that = this
-    console.log("测试开始233");
     // 蓝牙初始化
     wx.openBluetoothAdapter({
       success: (res) => {
         console.info(`蓝牙初始化成功！！！${res}`);
-        wx.showToast({
-          title: '蓝牙初始化成功',
-          icon: "success",
-          duration: 1000
-        })
         // 开始搜索蓝牙
         that.findBlue()
       },
@@ -125,44 +182,13 @@ Page({
 
   },
 
-  // 连续发码版本
-  // //震动按钮
-  // shakClose(){
-  //   let shakData = this.data.shakState;
-  //   this.setData({
-  //     shakState: !shakData
-  //   });
-  //   clearInterval(this.data.timer); // 清除定时器
-  //   console.log("关闭");
-  // },
-
-  // //按钮的点击事件
-  // shakBtn(e) {
-  //   let shakData = this.data.shakState;
-  //   let value = e.currentTarget.dataset.value;
-  //   this.setData({
-  //     shakState: !shakData,
-  //   });
-  //   // this.setData({
-  //   //   shakData: value,
-  //   // })
-  //  setTimeout(function(){
-  //     let time = setInterval(() => {
-  //       this.writeFn(e)
-  //       // console.log(this.data.shakData);
-  //       console.log('打开');
-  //     },1000)
-  //     this.setData({
-  //       timer: time,
-  //     })
-  //  }.bind(this),1000)
-      
-      
-  // },
   // 点击发码版本
   shakBtn(e){
     let shakData = this.data.shakState;
     let value = e
+    // 判断是否授权蓝牙功能
+    this.authorizationFn()
+
     wx.vibrateShort({
       success: function() {
         console.log("短震动成功");
@@ -190,9 +216,10 @@ Page({
          wx.showLoading({
            title: '正在搜索设备',
          })
-        that.setData({
-          connectData: "搜索中"
-        })
+        // that.setData({
+        //   connectData: "搜索中"
+        // })
+
         // 搜索10s后关闭搜索
         setTimeout(()=>{
             wx.stopBluetoothDevicesDiscovery({
@@ -201,9 +228,6 @@ Page({
               },
             })
             wx.hideLoading()
-            that.setData({
-              connectData: "未搜索到设备"
-            })
         },10000)
 
         // that.data.connectData = "搜索中"
@@ -220,12 +244,6 @@ Page({
     wx.getBluetoothDevices({
       success: (res) => {
         res.devices.forEach((ele,index)=>{
-          let array0 = that.data.blueAllData
-          array0.push(`${index}.${ele.name}`)
-          console.log(array0);
-         that.setData({
-          blueAllData: array0
-         })
           if (ele.name == that.data.inputValue || ele.localName == that.data.localName) {
             wx.hideLoading()
             console.log(`连接成功了哦代码酱！！！,${ele.deviceId}`);
@@ -261,15 +279,17 @@ Page({
       // 这里的deviceId 需要已经通过 createBLEConnection 与对应设备建立连接
       deviceId: deviceId, // 设备id
       success: (res)=>{
+
         that.setData({
-          connectData: "连接成功"
+          connectData: "已连接",
+          connectState: ture
         })
+
         wx.showToast({
           title: '连接成功',
           icon: 'fails',
           duration: 1000
         })
-      console.log('代码酱',that.data.blueAllData);
       // 后续还要获取蓝牙设备的所有服务
       that.getServiceId()
       }
@@ -289,14 +309,6 @@ Page({
         res.services.forEach((ele,index)=>{ 
           // 获取所有特征值
           that.getCharacteId(that.data.deviceId,that.data.services)
-
-          // 页面显示
-          let servicesAll =  that.data.blueAlluuid
-          servicesAll.push(`第${index},${ele.uuid}`)
-          console.log(servicesAll);
-          that.setData({
-            blueAlluuid: servicesAll
-          })
         })
         console.log(res,"获取设备所有服务");
       },
@@ -386,6 +398,10 @@ Page({
     // dataView.setUint8(1, 0xf0); // 设置第二个字节为 11110000
     dataView.setUint16(0, order,false);
     console.log(order);
+
+    // 判断是否授权蓝牙功能
+    this.authorizationFn()
+
     // 按钮震动
     wx.vibrateShort({
       success: function() {
@@ -431,12 +447,6 @@ Page({
         console.log(res,'启用低功能蓝牙监听成功');
         const buffer = new ArrayBuffer(1) // 构造发送数据的ArrayBuffer
         const dataView = new DataView(buffer)
-
-        // wx.showToast({
-        //   title: '请截个图给我谢谢',
-        //   icon: "success",
-        //   duration: 1000
-        // })
         // 监听获取数据
         // ArrayBuffer转16进制字符串示例
         function ab2hex(buffer) {

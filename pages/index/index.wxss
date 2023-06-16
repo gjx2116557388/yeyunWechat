@@ -23,12 +23,20 @@
   width: 400rpx;
   text-align: center;
   line-height: 50rpx;
-  border: 1rpx solid #C2CCAE;
-  background: #E87188;
+  border: 5rpx solid #E7E7E7;
+  /* background: #E87188; */
+  background: linear-gradient(to right, #fc555d, #f75493);
   display: inline-block;
   border-radius:30rpx;
   position: absolute;
   bottom: 100rpx;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
+}
+.green{
+  color: green;
+}
+.gray{
+  color: gray;
 }
 .menu{
   /* 防止定位跟弹性布局冲突所以显式加一个宽度 */
@@ -117,4 +125,12 @@
   100% {
     transform: rotate(-10deg);
   }
+}
+.help{
+  color: #83bceb;
+  font-size: 35rpx;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 30rpx;
 }

@@ -5,7 +5,8 @@
 <!-- 顶部错误提示 -->
   <!-- <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips> -->
     <view class="connect-btn mar-top-40" bindtap="connectBtn">
-      夜韵儿玩具（{{connectData}}）
+      <!-- 夜韵儿玩具 -->
+      连接开关 <text class="{{connectState ? 'green' : 'gray'}}">(◉{{connectData}})</text>
     </view>
   </view>
   <view class="menu">
@@ -42,18 +43,10 @@
           </view>
       </view>
     </view>
-    
-    <view>
-    <!-- 测试 -->
-    <view>这里是搜索到所有UUID</view>
-    {{blueAlluuid}}
-    </view>
-    <view>
-    <!-- 测试 -->
-    <view>这里是搜索到所有蓝牙设备</view>
-    {{blueAllData}}
-    </view>
 
+  </view>
+  <view class="help">
+      <navigator url="/pages/help/help">连接不上？前往查看帮助</navigator>
   </view>
   <!-- 震动容器 -->
   <!-- <view class="{{shakState ? 'open' : 'close'}}">
