@@ -1,0 +1,51 @@
+/* pages/help/help.wxss */
+.help_wrap{
+  /* background-color: #333738; */
+  background-image: linear-gradient(#F7938B,#F6B7B5,#F6E8E8);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+}
+.help_title{
+  text-align: center; 
+  width: 100%;  
+  background: linear-gradient(to right, #fd737a, #f89273);
+  border-radius: 10rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 50rpx;
+  margin-bottom: 15rpx;
+}
+.help_box{
+  height: 650rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 10rpx solid rgb(247, 141, 141);
+  /* position: absolute; */
+  /* animation: animated-border 2s infinite linear;
+  font-size: 40rpx; */
+  padding: 15rpx;
+  font-size: 40rpx;
+  border-image: linear-gradient(to right, #fd737a, #f89273);
+  border-image-slice: 1;
+  background-color: rgb(247, 155, 155);
+}
+.to_videos{
+  color: #83bceb;
+}
+/* @keyframes animated-border {
+  0% {
+    border-color: rgb(247, 131, 131);
+  }
+  50% {
+    border-color: rgb(252, 180, 180);
+  }
+  100% {
+    border-color: rgb(247, 131, 131);
+
+
+  }
+} */
