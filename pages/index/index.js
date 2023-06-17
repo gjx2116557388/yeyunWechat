@@ -128,6 +128,8 @@ Page({
 
   // 连接按钮
   connectBtn(){
+    var that = this
+    console.log("这里是断开模块",that.data.connectState);
     // 点击震动
     wx.vibrateShort({
       success: function() {
@@ -137,25 +139,29 @@ Page({
         console.log("短震动失败");
       }
     });
-    if (this.data.connectState) {
-      this.authorizationFn()
-      this.connect()
-     
-    }else{
+    if (that.data.connectState) {
+      console.log("这里是断开模块",that);
       // 断开与蓝牙设备的连接
       wx.closeBLEConnection({
-        deviceId: this.data.deviceId,
+        deviceId: that.data.deviceId,
         success: function(res) {
           console.log('断开蓝牙连接成功', res);
-          this.setData({
-            connectState: true,
+          that.setData({
+            connectState: false
+          })
+          that.setData({
             connectData: "未连接"
           })
+          console.log(this.data.connectState);
         },
         fail: function(res) {
           console.log('断开蓝牙连接失败', res);
         }
       });
+     
+    }else{
+      this.authorizationFn()
+      this.connect()
     }
      
     
@@ -274,6 +280,7 @@ Page({
   },
   // 连接蓝牙
   connectBlue(deviceId){
+    console.log("啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦里去了");
     var that = this
     wx.createBLEConnection({
       // 这里的deviceId 需要已经通过 createBLEConnection 与对应设备建立连接
@@ -282,7 +289,9 @@ Page({
 
         that.setData({
           connectData: "已连接",
-          connectState: ture
+        })
+        that.setData({
+          connectState: true
         })
 
         wx.showToast({
@@ -400,7 +409,7 @@ Page({
     console.log(order);
 
     // 判断是否授权蓝牙功能
-    this.authorizationFn()
+    that.authorizationFn()
 
     // 按钮震动
     wx.vibrateShort({

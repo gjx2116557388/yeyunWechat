@@ -22,24 +22,29 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
     "useIsolateContext": true,
-    "useCompilerModule": false,
-    "userConfirmedUseCompilerModuleSwitch": false
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "condition": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.30.3",
-  "appid": "wx33d336df7d37ee75",
-  "projectname": "taotao",
+  "appid": "wx2154cbeb4c8c3ce5",
+  "projectname": "yeyunWechat",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "condition": {}
 }
