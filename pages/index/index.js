@@ -368,9 +368,15 @@ Page({
                   value: buffer,
                   success(res) {
                     console.log(`发送数据成功,${JSON.stringify(res)}`,'连续发码')
+                    that.setData({
+                      connectData: "已连接"
+                    })
                   },
                   fail(res) {
                     console.log('发送数据失败：', res)
+                    that.setData({
+                      connectData: "未连接"
+                    })
                   }
                 })
               },500)
