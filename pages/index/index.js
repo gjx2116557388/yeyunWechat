@@ -371,11 +371,17 @@ Page({
                     that.setData({
                       connectData: "已连接"
                     })
+                    that.setData({
+                      connectState: true
+                    })
                   },
                   fail(res) {
                     console.log('发送数据失败：', res)
                     that.setData({
                       connectData: "未连接"
+                    })
+                    that.setData({
+                      connectState: false
                     })
                   }
                 })
