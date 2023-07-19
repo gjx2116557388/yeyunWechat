@@ -6,10 +6,12 @@
     "pages/help/help",
     "pages/videos/videos"
   ],
+  "shareAppMessage": true,
+  "shareTimeline": true,
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "夜韵电子",
+    "navigationBarTitleText": "夜韵玩具",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",
