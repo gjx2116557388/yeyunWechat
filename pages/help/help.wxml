@@ -10,7 +10,7 @@
       <view>3. 同意授权程序提示使用您的蓝牙功能</view>
       <view>4. 点击上面红色按钮（显示的未连接）连接或者重新进入程序会自动连接</view>
       <view>5. 连接成功后点击程序的开关，设备会有抖动</view>
-      <view class="to_videos"><navigator url="/pages/videos/videos">点击查看使用视频</navigator></view>
+      <!-- <view class="to_videos"><navigator url="/pages/videos/videos">点击查看使用视频</navigator></view> -->
    </view>
   </view>
 

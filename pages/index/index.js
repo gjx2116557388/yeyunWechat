@@ -3,6 +3,22 @@
 const app = getApp()
 
 Page({
+  // 分享给好友
+  onShareAppMessage: function () {
+    return {
+      title: '夜韵玩具',
+      path: '/pages/index/index',  // 分享的路径
+      // imageUrl: '/assets/switch.png',  // 分享的图片
+    }
+  },
+  // 分享到朋友圈
+  onShareTimeline: function () {
+    return {
+      title: '夜韵玩具',
+      // query: 'key=value', // 可选，携带的参数
+      // imageUrl: '/assets/switch.png',  // 可选，分享的图片
+    }
+  },
   //判断小程序的是否隐藏
   onShow(){
     wx.getSystemInfo({

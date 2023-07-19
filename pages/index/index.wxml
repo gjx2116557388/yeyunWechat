@@ -39,7 +39,7 @@
       <view>
           <image src="/assets/my.png" style="width: 100rpx;height: 100rpx;"></image>
           <view style="text-align: center;">
-            <text>震动 \n shak</text>
+            <text>震动 \n shake</text>
           </view>
       </view>
     </view>
